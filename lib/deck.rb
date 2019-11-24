@@ -22,9 +22,12 @@ class Deck
 	end
 end
 
-uno = Card.new("Test?", "Test", :Test)
-dos = Card.new("Test?", "Test", :Tset)
-cards = [uno, dos]
-deck = Deck.new(cards)
-p deck.count
-p deck.cards_in_category(:Tset)
+#uno = Card.new("Test?", "Test", :Test)
+#dos = Card.new("Test?", "Test", :Tset)
+#cards = [uno, dos]
+#deck = Deck.new(cards)
+#p deck.count
+#p deck.cards_in_category(:Tset)
+
+
+

@@ -7,15 +7,19 @@ class Round
 		@deck = d
 		@turns = []
 		@correct = []
+		@corr_in_cat = []
+		@card_count = []
 	end
 
-	def take_turn(guess, card)
+	def take_turn(guess)
+		card = @deck.first
 		turn = Turn.new(guess, card)
 		@turns << turn
+		@card_count << @deck.cards.first
 		if turn.correct?
-			@correct << turn
+			@correct << @deck.cards.first
 		end
-		@deck.cards.shift
+		@deck.cards.delete_at[0]
 		return turn
 	end
 
@@ -27,9 +31,9 @@ class Round
 		return @correct.count
 	end
 
-	def number_correct_by_category(weird)
-		cdeck = Deck.new(@correct)
-		return cdeck.cards_in_category(weird)
+	def number_correct_by_category(category)
+		@corr_in_cat << @correct.cards_in_category(category)
+		return @corr_in_cat
 	end
 	
 	def percent_correct
@@ -38,9 +42,9 @@ class Round
 		return x / y
 	end
 
-	def percent_correct_by_category(weird)	
-		x = number_correct_by_category(weird)
-		y = @correct.count
+	def percent_correct_by_category(category)
+		x = number_correct_by category(category)
+		y = @card_count
 		return x / y
 	end
 end
