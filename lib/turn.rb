@@ -20,9 +20,9 @@ class Turn
 	def feedback
 		x = correct?
 		if x == true
-			p "Correct!"
+			puts "Correct!"
 		else 
-			p "Incorrect!"
+			puts "Incorrect!"
 		end
 	end
 end

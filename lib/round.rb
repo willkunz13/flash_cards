@@ -1,7 +1,7 @@
 require_relative 'deck.rb'
 
 class Round
-	attr_reader :deck, :turns, :num_correct
+	attr_reader :deck, :turns, :num_correct, :correct
 
 	def initialize(d)
 		@deck = d
@@ -9,17 +9,20 @@ class Round
 		@correct = []
 		@corr_in_cat = []
 		@card_count = []
+		
+		
 	end
 
 	def take_turn(guess)
-		card = @deck.first
+		card = @deck.cards.first
 		turn = Turn.new(guess, card)
 		@turns << turn
-		@card_count << @deck.cards.first
+		@card_count << card
 		if turn.correct?
-			@correct << @deck.cards.first
+			@correct << turn.card
 		end
-		@deck.cards.delete_at[0]
+		turn.feedback
+		@deck.cards.delete_at(0)
 		return turn
 	end
 
@@ -31,21 +34,42 @@ class Round
 		return @correct.count
 	end
 
+	def cards_in_category(type)
+		new_array = []
+		@deck.og_cards.each do |card|
+			if card.category == type
+				new_array << card
+			end
+		end
+		return new_array.count
+	end
+
 	def number_correct_by_category(category)
-		@corr_in_cat << @correct.cards_in_category(category)
-		return @corr_in_cat
+		new_array = []
+		@correct.each do |card|
+			if card.category == category
+				new_array << card
+			end
+		end
+	return new_array.count
 	end
 	
 	def percent_correct
-		x = @correct.count
-		y = @turns.count
-		return x / y
+		x = @correct.count.to_f
+		y = deck.og_cards.count
+		z = x / y * 100
+		return z.to_i
 	end
 
 	def percent_correct_by_category(category)
-		x = number_correct_by category(category)
-		y = @card_count
-		return x / y
+		x = number_correct_by_category(category).to_f
+		y = cards_in_category(category)
+		if y == 0
+			y = 1
+			return 0
+		end
+		z = x / y * 100
+		return z.to_i
 	end
 end
 
